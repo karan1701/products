@@ -28,16 +28,16 @@ public class ProductsController {
 	public List<BookDetails> getAllBooks() {
 		logger.info("Getting all the books");
 		// Add a call to book details MS
-		List<BookDetails> booksList = restTemplate.getForObject("http://localhost:9092/bookdetails/", List.class);
+		List<BookDetails> booksList = restTemplate.getForObject("http://bookdetails-app-svc/bookdetails/", List.class);
 		return booksList;
 	}
 
 	@GetMapping("/{bookid}")
 	public BookInfo getBookByBookId(@PathVariable(name = "bookid") Integer bookId) {
 		logger.info("Getting book details of {}", bookId);
-		BookDetails bookDetail = restTemplate.getForObject("http://localhost:9092/bookdetails/" + bookId,
+		BookDetails bookDetail = restTemplate.getForObject("http://bookdetails-app-svc/bookdetails/" + bookId,
 				BookDetails.class);
-		List<BookReview> bookReviews = restTemplate.getForObject("http://localhost:9093/review/" + bookId, List.class);
+		List<BookReview> bookReviews = restTemplate.getForObject("http://reviews-app-svc/review/" + bookId, List.class);
 		BookInfo bookInfo = new BookInfo(bookDetail, bookReviews);
 		// Call bookdetails ms and review ms
 		return bookInfo;
